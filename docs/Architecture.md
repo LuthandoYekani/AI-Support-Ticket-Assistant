@@ -10,30 +10,31 @@ It automates the first stage of technical support by analysing incoming customer
 
 ## Architecture
 
-Customer Email
-        │
-        ▼
-Manual Trigger / Webhook
-        │
-        ▼
-Input Processing
-(Edit Fields)
-        │
-        ▼
-Google Gemini AI
-(Basic LLM Chain)
-        │
-        ▼
-Technical Analysis
-        │
-        ▼
-Future Integrations
-├── Gmail
-├── Jira
-├── ServiceNow
-├── Microsoft Teams
-└── AWS
+```mermaid
+flowchart LR
 
+A[Manual Trigger] --> B[Edit Fields]
+
+B --> C[Google Gemini LLM]
+
+C --> D[Technical Analysis]
+
+D --> E[Issue Summary]
+
+D --> F[Priority]
+
+D --> G[Troubleshooting]
+
+D --> H[Customer Response]
+
+H -. Future .-> I[Gmail]
+
+H -. Future .-> J[Jira]
+
+H -. Future .-> K[ServiceNow]
+
+H -. Future .-> L[Microsoft Teams]
+```
 ---
 
 ## Technologies
