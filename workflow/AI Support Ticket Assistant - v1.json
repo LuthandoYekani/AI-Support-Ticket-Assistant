@@ -1,0 +1,140 @@
+{
+  "name": "AI Support Ticket Assistant - v1",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e08eb811-64b1-4006-b042-81ce85c2007a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fdde3ff2-8f90-4296-983f-3f87c9664cc5",
+              "name": "customerName",
+              "value": "John Smith",
+              "type": "string"
+            },
+            {
+              "id": "043858ee-94d9-44d0-beef-140f8cc95311",
+              "name": "email",
+              "value": "john.smith@email.com",
+              "type": "string"
+            },
+            {
+              "id": "270c5959-3b11-40e2-aeae-bcc68a84f9f8",
+              "name": "subject",
+              "value": "50Mbps Fibre Internet Down",
+              "type": "string"
+            },
+            {
+              "id": "b1cafe5e-24bb-4b1f-a36d-8ad0c7854315",
+              "name": "message",
+              "value": "Hello Support Team, our 50Mbps fibre connection has been offline since yesterday afternoon. We have restarted the ONT and Wi-Fi router three times, but there is still no internet connection. Our neighbours using the same ISP still have service. Please assist as soon as possible.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d001349a-e884-44e2-be8e-73f13b3ab8d7",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a Senior IT Support Engineer working for an Internet Service Provider.\n\nCustomer Name:\n{{$json.customerName}}\n\nCustomer Email:\n{{$json.email}}\n\nSubject:\n{{$json.subject}}\n\nIssue Description:\n{{$json.message}}\n\nPlease perform the following:\n\n1. Summarize the customer's issue.\n2. Assign a priority (Low, Medium, High, Critical).\n3. List the five most likely causes in order.\n4. Recommend troubleshooting steps.\n5. Decide whether escalation is required.\n6. If escalation is required, specify which team should handle it.\n7. Draft a professional email back to the customer.\n\nFormat the response with clear headings.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        416,
+        0
+      ],
+      "id": "f26c9903-b4f6-4470-97b7-6d92a6fb3065",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        352,
+        208
+      ],
+      "id": "84d88d72-903a-4e0d-b170-cef000a40701",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "OIDOiCDnk10r7xza",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "317cb921-b3dc-4662-9ce4-a1a30c26fce1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0e679fbaa00268ed4a8b60cc4a7f48d220ca69600f865323334e4b410fd3fa4d"
+  },
+  "nodeGroups": [],
+  "id": "mNWqRZcUzNQIDudK",
+  "tags": []
+}
